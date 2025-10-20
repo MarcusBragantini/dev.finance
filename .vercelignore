@@ -1,0 +1,17 @@
+# Arquivos desnecessários para deploy
+node_modules/
+.git/
+.env
+.env.local
+*.log
+.DS_Store
+Thumbs.db
+
+# Arquivos de desenvolvimento
+backend/node_modules/
+backend/.env
+backend/*.log
+
+# Documentação local
+VERCEL_ENV.md
+README.md
