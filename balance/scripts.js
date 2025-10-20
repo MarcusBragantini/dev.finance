@@ -350,12 +350,23 @@ const Utils = {
   },
 
   formatDate(dateString) {
-    // Se já está no formato ISO (YYYY-MM-DD)
-    if (dateString.includes("-")) {
-      const [year, month, day] = dateString.split("-")
-      return `${day}/${month}/${year}`
+    try {
+      const date = new Date(dateString)
+
+      // Formatar data: DD/MM/YYYY
+      const day = date.getDate().toString().padStart(2, "0")
+      const month = (date.getMonth() + 1).toString().padStart(2, "0")
+      const year = date.getFullYear()
+
+      // Formatar hora: HH:MM
+      const hours = date.getHours().toString().padStart(2, "0")
+      const minutes = date.getMinutes().toString().padStart(2, "0")
+
+      return `${day}/${month}/${year} - ${hours}:${minutes}`
+    } catch (error) {
+      console.error("Erro ao formatar data:", error)
+      return dateString
     }
-    return dateString
   },
 
   formatDateToISO(dateString) {
@@ -370,7 +381,7 @@ const Utils = {
   formatCurrency(value) {
     const signal = Number(value) < 0 ? "-" : ""
     value = String(Math.abs(value)).replace(/\D/g, "")
-    value = Number(value) / 100
+    value = Number(value)
 
     const formatted = value.toLocaleString("pt-BR", {
       style: "currency",
