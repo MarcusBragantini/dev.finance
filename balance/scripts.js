@@ -346,7 +346,15 @@ const DOM = {
 // =====================================================
 const Utils = {
   formatAmount(value) {
-    return parseFloat(value)
+    // Converter vírgula para ponto se necessário
+    const normalizedValue = value.toString().replace(",", ".")
+    const parsed = parseFloat(normalizedValue)
+
+    if (isNaN(parsed)) {
+      throw new Error("Valor inválido")
+    }
+
+    return parsed
   },
 
   formatDate(dateString) {
@@ -423,8 +431,9 @@ const Form = {
       throw new Error("Por favor, preencha todos os campos obrigatórios")
     }
 
-    if (parseFloat(amount) <= 0) {
-      throw new Error("O valor deve ser maior que zero")
+    const amountValue = parseFloat(amount)
+    if (isNaN(amountValue) || amountValue <= 0) {
+      throw new Error("O valor deve ser um número maior que zero")
     }
   },
 
@@ -474,6 +483,34 @@ const Form = {
 const formElement = document.querySelector("#form form")
 if (formElement) {
   formElement.addEventListener("submit", (e) => Form.submit(e))
+}
+
+// Formatar input de valor em tempo real
+const amountInput = document.querySelector("input#amount")
+if (amountInput) {
+  amountInput.addEventListener("input", (e) => {
+    let value = e.target.value
+
+    // Permitir apenas números, vírgula e ponto
+    value = value.replace(/[^0-9,.]/g, "")
+
+    // Garantir apenas uma vírgula ou ponto
+    const hasComma = value.includes(",")
+    const hasDot = value.includes(".")
+
+    if (hasComma && hasDot) {
+      // Se tem ambos, manter apenas o último
+      const lastComma = value.lastIndexOf(",")
+      const lastDot = value.lastIndexOf(".")
+      if (lastComma > lastDot) {
+        value = value.replace(/\./g, "")
+      } else {
+        value = value.replace(/,/g, "")
+      }
+    }
+
+    e.target.value = value
+  })
 }
 
 // =====================================================
