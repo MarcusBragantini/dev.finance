@@ -83,10 +83,12 @@ Após configurar o banco, execute o arquivo `database/schema.sql`:
 
 ### 6. Testar o Deploy
 
-1. Acesse a URL fornecida pela Vercel
-2. Teste o registro de usuário
-3. Teste o login
-4. Teste adicionar transações
+1. **Teste Básico**: Acesse `/test-deploy.html` para verificar se tudo está funcionando
+2. **Teste Completo**:
+   - Acesse a URL fornecida pela Vercel
+   - Teste o registro de usuário
+   - Teste o login
+   - Teste adicionar transações
 
 ## 🔗 URLs Importantes
 

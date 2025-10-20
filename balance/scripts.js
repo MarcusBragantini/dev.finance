@@ -1,7 +1,7 @@
 // =====================================================
 // CONFIG
 // =====================================================
-const API_URL = "http://localhost:3000/api"
+const API_URL = "/api"
 let authToken = localStorage.getItem("token")
 let currentUser = JSON.parse(localStorage.getItem("user") || "null")
 let categories = { income: [], expense: [] }

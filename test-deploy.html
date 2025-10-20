@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Deploy - dev.finance</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f0f2f5;
+    }
+
+    .test-item {
+      background: white;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .success {
+      color: #49AA26;
+    }
+
+    .error {
+      color: #e92929;
+    }
+
+    .loading {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>🧪 Teste de Deploy - dev.finance</h1>
+
+  <div class="test-item">
+    <h3>1. Arquivos Estáticos</h3>
+    <p id="static-test" class="loading">Testando...</p>
+  </div>
+
+  <div class="test-item">
+    <h3>2. API Backend</h3>
+    <p id="api-test" class="loading">Testando...</p>
+  </div>
+
+  <div class="test-item">
+    <h3>3. Páginas de Autenticação</h3>
+    <p id="auth-test" class="loading">Testando...</p>
+  </div>
+
+  <div class="test-item">
+    <h3>4. Dashboard</h3>
+    <p id="dashboard-test" class="loading">Testando...</p>
+  </div>
+
+  <script>
+    async function testDeploy() {
+      // Teste 1: Arquivos estáticos
+      try {
+        const response = await fetch('/assets/logo.svg');
+        if (response.ok) {
+          document.getElementById('static-test').innerHTML = '✅ Arquivos estáticos funcionando';
+          document.getElementById('static-test').className = 'success';
+        } else {
+          throw new Error('Erro ao carregar assets');
+        }
+      } catch (error) {
+        document.getElementById('static-test').innerHTML = '❌ Erro: ' + error.message;
+        document.getElementById('static-test').className = 'error';
+      }
+
+      // Teste 2: API
+      try {
+        const response = await fetch('/api/categories');
+        if (response.status === 401) {
+          document.getElementById('api-test').innerHTML = '✅ API funcionando (401 = sem token, normal)';
+          document.getElementById('api-test').className = 'success';
+        } else if (response.ok) {
+          document.getElementById('api-test').innerHTML = '✅ API funcionando';
+          document.getElementById('api-test').className = 'success';
+        } else {
+          throw new Error('API não respondeu corretamente');
+        }
+      } catch (error) {
+        document.getElementById('api-test').innerHTML = '❌ Erro: ' + error.message;
+        document.getElementById('api-test').className = 'error';
+      }
+
+      // Teste 3: Páginas de auth
+      try {
+        const response = await fetch('/auth/login.html');
+        if (response.ok) {
+          document.getElementById('auth-test').innerHTML = '✅ Páginas de autenticação funcionando';
+          document.getElementById('auth-test').className = 'success';
+        } else {
+          throw new Error('Páginas de auth não encontradas');
+        }
+      } catch (error) {
+        document.getElementById('auth-test').innerHTML = '❌ Erro: ' + error.message;
+        document.getElementById('auth-test').className = 'error';
+      }
+
+      // Teste 4: Dashboard
+      try {
+        const response = await fetch('/balance/index.html');
+        if (response.ok) {
+          document.getElementById('dashboard-test').innerHTML = '✅ Dashboard funcionando';
+          document.getElementById('dashboard-test').className = 'success';
+        } else {
+          throw new Error('Dashboard não encontrado');
+        }
+      } catch (error) {
+        document.getElementById('dashboard-test').innerHTML = '❌ Erro: ' + error.message;
+        document.getElementById('dashboard-test').className = 'error';
+      }
+    }
+
+    // Executar testes
+    testDeploy();
+  </script>
+</body>
+
+</html>
