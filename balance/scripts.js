@@ -346,12 +346,22 @@ const DOM = {
 // =====================================================
 const Utils = {
   formatAmount(value) {
+    if (!value || value === "") {
+      throw new Error("Valor não pode estar vazio")
+    }
+
     // Converter vírgula para ponto se necessário
-    const normalizedValue = value.toString().replace(",", ".")
+    let normalizedValue = value.toString().trim()
+
+    // Se tem vírgula, converter para ponto
+    if (normalizedValue.includes(",")) {
+      normalizedValue = normalizedValue.replace(",", ".")
+    }
+
     const parsed = parseFloat(normalizedValue)
 
-    if (isNaN(parsed)) {
-      throw new Error("Valor inválido")
+    if (isNaN(parsed) || parsed < 0) {
+      throw new Error("Valor deve ser um número positivo válido")
     }
 
     return parsed
@@ -431,9 +441,11 @@ const Form = {
       throw new Error("Por favor, preencha todos os campos obrigatórios")
     }
 
-    const amountValue = parseFloat(amount)
-    if (isNaN(amountValue) || amountValue <= 0) {
-      throw new Error("O valor deve ser um número maior que zero")
+    // Validar valor usando a função formatAmount
+    try {
+      Utils.formatAmount(amount)
+    } catch (error) {
+      throw new Error(error.message)
     }
   },
 
@@ -485,31 +497,38 @@ if (formElement) {
   formElement.addEventListener("submit", (e) => Form.submit(e))
 }
 
-// Formatar input de valor em tempo real
+// Permitir apenas números e decimais no input
 const amountInput = document.querySelector("input#amount")
 if (amountInput) {
-  amountInput.addEventListener("input", (e) => {
-    let value = e.target.value
+  amountInput.addEventListener("keypress", (e) => {
+    // Permitir: números, ponto, vírgula, backspace, delete, tab, enter, escape
+    const allowedKeys = [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      ".",
+      ",",
+      "Backspace",
+      "Delete",
+      "Tab",
+      "Enter",
+      "Escape",
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+    ]
 
-    // Permitir apenas números, vírgula e ponto
-    value = value.replace(/[^0-9,.]/g, "")
-
-    // Garantir apenas uma vírgula ou ponto
-    const hasComma = value.includes(",")
-    const hasDot = value.includes(".")
-
-    if (hasComma && hasDot) {
-      // Se tem ambos, manter apenas o último
-      const lastComma = value.lastIndexOf(",")
-      const lastDot = value.lastIndexOf(".")
-      if (lastComma > lastDot) {
-        value = value.replace(/\./g, "")
-      } else {
-        value = value.replace(/,/g, "")
-      }
+    if (!allowedKeys.includes(e.key)) {
+      e.preventDefault()
     }
-
-    e.target.value = value
   })
 }
 
