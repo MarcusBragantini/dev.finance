@@ -1,0 +1,42 @@
+# Dependências
+node_modules/
+backend/node_modules/
+
+# Variáveis de ambiente
+.env
+backend/.env
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build
+dist/
+build/
+
+# Uploads
+uploads/
+backend/uploads/
+
+# Temporários
+tmp/
+temp/
+*.tmp
+
+# Configurações locais
+config/local.js
+backend/config/local.js
+

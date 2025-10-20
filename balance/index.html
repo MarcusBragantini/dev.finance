@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dev.finance$ - Painel de Controle</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../styles/styles.css">
+  <style>
+    /* Reset para dashboard */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      margin: 0;
+      padding: 2rem;
+    }
+
+    #balance {
+      margin-top: 0;
+    }
+
+    /* Estilos adicionais para categorias */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    select {
+      border: none;
+      border-radius: 0.2rem;
+      padding: 0.8rem;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: 2px solid var(--green);
+    }
+
+    optgroup {
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    option {
+      padding: 0.5rem;
+    }
+
+    small {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex: 1;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .theme-switch-wrapper {
+      position: absolute;
+      left: 2rem;
+      top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="theme-switch-wrapper">
+      <label for="checkbox" class="theme-switch">
+        <input type="checkbox" id="checkbox" />
+        <div class="slider round"></div>
+      </label>
+    </div>
+    <div class="header-container container">
+      <a href="../">
+        <img src="../assets/logo.svg" alt="Logo Dev Finance">
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="balance">
+      <h2 class="sr-only">Balanço</h2>
+
+      <div class="card">
+        <h3>
+          <span>Entradas</span>
+          <img src="../assets/income.svg" alt="Ícone de entradas">
+        </h3>
+        <p id="incomeDisplay">R$ 0,00</p>
+      </div>
+
+      <div class="card">
+        <h3>
+          <span>Saídas</span>
+          <img src="../assets/expense.svg" alt="Ícone de saídas">
+        </h3>
+        <p id="expenseDisplay">R$ 0,00</p>
+      </div>
+
+      <div class="card total">
+        <h3>
+          <span>Total</span>
+          <img src="../assets/total.svg" alt="Ícone de total">
+        </h3>
+        <p id="totalDisplay">R$ 0,00</p>
+      </div>
+
+    </section>
+
+    <section id="transaction">
+      <h2 class="sr-only">Transações</h2>
+
+      <button class="button new" type="button" onclick="Modal.open()">
+        + Nova Transação
+      </button>
+
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Data</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 2rem; color: #969cb3;">
+              Carregando transações...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="modal-overlay">
+    <div class="modal">
+      <div id="form">
+        <h2>Nova Transação</h2>
+        <form action="">
+          <div class="input-group">
+            <label class="sr-only" for="description">Descrição</label>
+            <input type="text" id="description" name="description" placeholder="Descrição" required>
+          </div>
+
+          <div class="form-row">
+            <div class="input-group">
+              <label class="sr-only" for="transactionType">Tipo</label>
+              <select id="transactionType" name="transactionType" required>
+                <option value="INCOME">Receita</option>
+                <option value="EXPENSE">Despesa</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label class="sr-only" for="category">Categoria</label>
+              <select id="category" name="category">
+                <option value="">Selecione uma categoria</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="sr-only" for="amount">Valor</label>
+            <input type="number" step="0.01" id="amount" name="amount" placeholder="0,00" required>
+            <small class="help">Digite apenas valores positivos</small>
+          </div>
+
+          <div class="input-group">
+            <label class="sr-only" for="date">Data</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+
+          <div class="input-group actions">
+            <button onclick="Modal.close()" type="button" class="button cancel">
+              Cancelar
+            </button>
+            <button type="submit" class="button save">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>2024 - dev.finance$ <small>Sistema Profissional de Controle Financeiro</small></p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+
+</html>

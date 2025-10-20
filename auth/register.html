@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - dev.finance$</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dark-blue: #363f5f;
+      --green: #49AA26;
+      --light-green: #3dd705;
+      --red: #e92929;
+      --background: #f0f2f5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      max-width: 1000px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+
+    .auth-left {
+      background: linear-gradient(135deg, #2D4A22 0%, #49AA26 100%);
+      padding: 60px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.1);
+        opacity: 0.3;
+      }
+    }
+
+    .auth-left-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .auth-left h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .auth-left p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .auth-left .icon {
+      font-size: 5rem;
+      margin-bottom: 2rem;
+    }
+
+    .auth-left ul {
+      list-style: none;
+      margin-top: 2rem;
+      text-align: left;
+    }
+
+    .auth-left ul li {
+      padding: 10px 0;
+      padding-left: 30px;
+      position: relative;
+    }
+
+    .auth-left ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .auth-right {
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .auth-header h2 {
+      color: var(--dark-blue);
+      font-size: 2rem;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .auth-header p {
+      color: #969cb3;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--dark-blue);
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e1e8ed;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--green);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(73, 170, 38, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #a0a0a0;
+    }
+
+    .password-strength {
+      margin-top: 5px;
+      font-size: 0.8rem;
+    }
+
+    .password-strength .bar {
+      height: 4px;
+      border-radius: 2px;
+      background: #e1e8ed;
+      margin-top: 5px;
+      overflow: hidden;
+    }
+
+    .password-strength .bar-fill {
+      height: 100%;
+      transition: all 0.3s ease;
+      width: 0%;
+    }
+
+    .password-strength.weak .bar-fill {
+      width: 33%;
+      background: var(--red);
+    }
+
+    .password-strength.medium .bar-fill {
+      width: 66%;
+      background: orange;
+    }
+
+    .password-strength.strong .bar-fill {
+      width: 100%;
+      background: var(--green);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green) 0%, var(--light-green) 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(73, 170, 38, 0.4);
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(73, 170, 38, 0.5);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .alert {
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-error {
+      background: #fee;
+      color: var(--red);
+      border-left: 4px solid var(--red);
+    }
+
+    .alert-success {
+      background: #efe;
+      color: var(--green);
+      border-left: 4px solid var(--green);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #969cb3;
+      font-size: 0.9rem;
+    }
+
+    .form-footer a {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .form-footer a:hover {
+      color: var(--light-green);
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-left {
+        display: none;
+      }
+
+      .auth-right {
+        padding: 40px 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-container">
+    <div class="auth-left">
+      <div class="auth-left-content">
+        <div class="icon">🚀</div>
+        <h1>Comece Agora!</h1>
+        <p>Junte-se a milhares de usuários que já transformaram sua vida financeira</p>
+        <ul>
+          <li>Controle total das suas finanças</li>
+          <li>Categorias detalhadas</li>
+          <li>Relatórios completos</li>
+          <li>100% grátis</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-header">
+        <h2>Criar Conta</h2>
+        <p>Preencha os dados abaixo para começar</p>
+      </div>
+
+      <div id="alert" class="alert"></div>
+
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="name">Nome completo</label>
+          <input type="text" id="name" name="name" placeholder="Seu nome" required autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required
+            autocomplete="new-password">
+          <div id="passwordStrength" class="password-strength">
+            <div class="bar">
+              <div class="bar-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Senha</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente"
+            required autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btnRegister">
+          Criar Conta
+        </button>
+      </form>
+
+      <div class="form-footer">
+        Já tem uma conta? <a href="login.html">Fazer login</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/api';
+
+    const form = document.getElementById('registerForm');
+    const btnRegister = document.getElementById('btnRegister');
+    const alert = document.getElementById('alert');
+    const passwordInput = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+
+    // Verificar se já está logado
+    if (localStorage.getItem('token')) {
+      window.location.href = '../balance/';
+    }
+
+    // Verificar força da senha
+    passwordInput.addEventListener('input', () => {
+      const password = passwordInput.value;
+      let strength = 'weak';
+
+      if (password.length >= 6) {
+        if (password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password)) {
+          strength = 'strong';
+        } else if (password.length >= 6) {
+          strength = 'medium';
+        }
+      }
+
+      passwordStrength.className = `password-strength ${strength}`;
+    });
+
+    function showAlert(message, type = 'error') {
+      alert.className = `alert alert-${type} show`;
+      alert.textContent = message;
+
+      setTimeout(() => {
+        alert.classList.remove('show');
+      }, 5000);
+    }
+
+    function setLoading(loading) {
+      btnRegister.disabled = loading;
+      if (loading) {
+        btnRegister.innerHTML = '<span class="loading"></span>Criando conta...';
+      } else {
+        btnRegister.innerHTML = 'Criar Conta';
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      // Validações
+      if (!name || !email || !password || !confirmPassword) {
+        showAlert('Por favor, preencha todos os campos');
+        return;
+      }
+
+      if (password.length < 6) {
+        showAlert('A senha deve ter no mínimo 6 caracteres');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert('As senhas não coincidem');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch(`${API_URL}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          // Salvar token e dados do usuário
+          localStorage.setItem('token', data.data.token);
+          localStorage.setItem('user', JSON.stringify(data.data.user));
+
+          showAlert('Conta criada com sucesso! Redirecionando...', 'success');
+
+          setTimeout(() => {
+            window.location.href = '../balance/index.html';
+          }, 1500);
+        } else {
+          showAlert(data.message || 'Erro ao criar conta');
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        showAlert('Erro ao conectar com o servidor. Verifique se a API está rodando.');
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+
+</html>

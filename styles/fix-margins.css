@@ -1,0 +1,41 @@
+/* Reset adicional para corrigir margens */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.bank {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.bank header {
+  margin-top: 0;
+  padding-top: 2rem;
+}
+
+.bank .hero {
+  margin: 0;
+  padding: 0;
+}
+
+/* Garantir que não há espaços extras */
+.bank main {
+  margin: 0;
+  padding: 0;
+}
+
+.bank section {
+  margin: 0;
+  padding: 0;
+}
