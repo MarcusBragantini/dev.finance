@@ -466,59 +466,12 @@ if (formElement) {
 }
 
 // =====================================================
-// USER MENU
-// =====================================================
-function setupUserMenu() {
-  const header = document.querySelector("header .container")
-  if (!header || !currentUser) return
-
-  // Adicionar menu de usuário ao header
-  const userMenu = document.createElement("div")
-  userMenu.style.cssText = "display: flex; align-items: center; gap: 15px;"
-  userMenu.innerHTML = `
-    <span id="userName" style="color: white; font-weight: 500;">${currentUser.name}</span>
-    <button onclick="logout()" style="
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 500;
-      transition: all 0.3s;
-    " onmouseover="this.style.background='rgba(255,255,255,0.3)'" 
-       onmouseout="this.style.background='rgba(255,255,255,0.2)'">
-      Sair
-    </button>
-  `
-
-  // Modificar layout do header
-  const headerContent = header.querySelector("a")
-  if (headerContent) {
-    header.style.display = "flex"
-    header.style.justifyContent = "space-between"
-    header.style.alignItems = "center"
-    header.appendChild(userMenu)
-  }
-}
-
-function logout() {
-  if (confirm("Deseja realmente sair?")) {
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    window.location.href = "../auth/login.html"
-  }
-}
-
-// =====================================================
 // APP
 // =====================================================
 const App = {
   async init() {
     updateUserInfo()
     setupLogout()
-    setupUserMenu()
     await Categories.load()
     await Transaction.loadAll()
   },
