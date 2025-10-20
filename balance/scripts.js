@@ -398,10 +398,9 @@ const Utils = {
 
   formatCurrency(value) {
     const signal = Number(value) < 0 ? "-" : ""
-    value = String(Math.abs(value)).replace(/\D/g, "")
-    value = Number(value)
+    const absValue = Math.abs(Number(value))
 
-    const formatted = value.toLocaleString("pt-BR", {
+    const formatted = absValue.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     })
