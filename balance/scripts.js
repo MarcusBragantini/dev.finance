@@ -7,6 +7,27 @@ let currentUser = JSON.parse(localStorage.getItem("user") || "null")
 let categories = { income: [], expense: [] }
 
 // =====================================================
+// HEADER FUNCTIONS
+// =====================================================
+function updateUserInfo() {
+  const userNameElement = document.getElementById("userName")
+  if (userNameElement && currentUser) {
+    userNameElement.textContent = currentUser.name || "Usuário"
+  }
+}
+
+function setupLogout() {
+  const logoutBtn = document.getElementById("logoutBtn")
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      window.location.href = "../auth/login.html"
+    })
+  }
+}
+
+// =====================================================
 // AUTH CHECK
 // =====================================================
 function checkAuth() {
@@ -495,6 +516,8 @@ function logout() {
 // =====================================================
 const App = {
   async init() {
+    updateUserInfo()
+    setupLogout()
     setupUserMenu()
     await Categories.load()
     await Transaction.loadAll()
